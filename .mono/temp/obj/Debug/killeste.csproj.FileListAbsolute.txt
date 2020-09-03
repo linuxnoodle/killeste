@@ -1,0 +1,5 @@
+/home/linuxnoodle/killeste/.mono/temp/bin/Debug/killeste.dll
+/home/linuxnoodle/killeste/.mono/temp/bin/Debug/killeste.pdb
+/home/linuxnoodle/killeste/.mono/temp/obj/Debug/killeste.csprojAssemblyReference.cache
+/home/linuxnoodle/killeste/.mono/temp/obj/Debug/killeste.dll
+/home/linuxnoodle/killeste/.mono/temp/obj/Debug/killeste.pdb

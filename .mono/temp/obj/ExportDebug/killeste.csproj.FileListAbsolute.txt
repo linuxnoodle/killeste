@@ -1,0 +1,5 @@
+/home/linuxnoodle/killeste/.mono/temp/bin/ExportDebug/killeste.dll
+/home/linuxnoodle/killeste/.mono/temp/bin/ExportDebug/killeste.pdb
+/home/linuxnoodle/killeste/.mono/temp/obj/ExportDebug/killeste.csprojAssemblyReference.cache
+/home/linuxnoodle/killeste/.mono/temp/obj/ExportDebug/killeste.dll
+/home/linuxnoodle/killeste/.mono/temp/obj/ExportDebug/killeste.pdb
