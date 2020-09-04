@@ -37,7 +37,6 @@ func _physics_process(_delta):
 	# warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector2.UP, true);
 	velocity.x = lerp(velocity.x, 0, 0.25);
-	print(global_position.y)
 	if (global_position.y > 1000):
 		global_position = Vector2(0, 0);
 
