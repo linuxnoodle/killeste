@@ -107,6 +107,7 @@ texture_hover = ExtResource( 3 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 12 )
+volume_db = -15.0
 autoplay = true
 [connection signal="pressed" from="HSplitContainer/ButtonContainer/VBoxContainer/StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="pressed" from="HSplitContainer/ButtonContainer/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]

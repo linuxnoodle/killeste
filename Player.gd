@@ -6,6 +6,7 @@ var dash_charged = true;
 var jump_count = 0;
 var just_hit_ground = false;
 var dashing = false;
+var death_count = 0;
 onready var main_sprite = get_node("Sprite");
 
 func _physics_process(_delta):
@@ -39,6 +40,7 @@ func _physics_process(_delta):
 	velocity.x = lerp(velocity.x, 0, 0.25);
 	if (global_position.y > 1000):
 		global_position = Vector2(0, 0);
+		death_count += 1;
 
 func dash():
 	var up = 1 if Input.get_action_strength("up") else 0;
