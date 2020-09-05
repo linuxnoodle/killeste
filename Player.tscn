@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://bruhdeline.png" type="Texture" id=1]
+[ext_resource path="res://killeste-idle.piskel" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://dash.wav" type="AudioStream" id=3]
 [ext_resource path="res://ground.wav" type="AudioStream" id=4]
