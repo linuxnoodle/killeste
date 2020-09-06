@@ -2,12 +2,15 @@ extends KinematicBody2D
 
 var velocity = Vector2(0, 0);
 var speed = 165;
-var dash_charged = true;
-var just_hit_ground = false;
-var dashing = false;
+var jump_height = -290;
 var death_count = 0;
+
+var dash_charged = true;
+var dashing = false;
+
 var coyote_hanging = true;
 var jump_was_pressed = false;
+var just_hit_ground = false;
 
 onready var main_sprite = get_node("Sprite");
 
@@ -33,13 +36,13 @@ func _physics_process(_delta):
 		jump_was_pressed = true;
 		remember_jump_time();
 		if (coyote_hanging):
-			velocity.y = -290;
+			velocity.y = jump_height;
 	
 	# plays ground hit noise, and sets a couple of variables
 	# dash_charged (recharges dash on ground touch)
 	if (is_on_floor()):
 		if (jump_was_pressed):
-			velocity.y = -290;
+			velocity.y = jump_height;
 		coyote_hanging = true;
 		if (not just_hit_ground):
 			$GroundSound.play();
@@ -93,12 +96,14 @@ func animation_loop():
 	$Sprite/AnimationPlayer.play(str(animation_state));
 	pass;
 	
+# gives leniency when jumping off platforms
 func coyote_time():
 	yield(get_tree().create_timer(0.1), "timeout");
 	coyote_hanging = false;
 	pass;
 
+# allows jumps to "buffer", so you have leeway when bhopping
 func remember_jump_time():
-	yield(get_tree().create_timer(0.07), "timeout");
+	yield(get_tree().create_timer(0.074), "timeout");
 	jump_was_pressed = false;
 	pass;
