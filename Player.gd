@@ -8,6 +8,8 @@ var just_hit_ground = false;
 var dashing = false;
 var death_count = 0;
 onready var main_sprite = get_node("Sprite");
+enum {IDLE = 0, WALKING = 1, DASHING = 2, FAST_FALLING = 3};
+var animation_state = IDLE;
 
 func _physics_process(_delta):
 	
@@ -45,10 +47,12 @@ func _physics_process(_delta):
 		just_hit_ground = false;
 	
 	# moves character with the provided velocity
+	# warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector2.UP, true);
 	
 	# makes character movement slowly move down to zero when not moving to
 	# not suddenly stop
+	animation_loop();
 	velocity.x = lerp(velocity.x, 0, 0.25);
 	if (global_position.y > 1000):
 		global_position = Vector2(0, 0);
@@ -77,3 +81,7 @@ func dash():
 	dashing = false;
 	
 	dash_charged = false;
+
+func animation_loop():
+	$Sprite/AnimationPlayer.play(str(animation_state));
+	

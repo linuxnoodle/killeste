@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://killeste-idle.piskel" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
@@ -6,7 +6,24 @@
 [ext_resource path="res://ground.wav" type="AudioStream" id=4]
 [ext_resource path="res://loop.wav" type="AudioStream" id=5]
 
-[sub_resource type="CapsuleShape2D" id=1]
+[sub_resource type="Animation" id=1]
+resource_name = "0"
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.05, 0.3, 0.55, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="CapsuleShape2D" id=2]
 radius = 23.687
 height = 19.9849
 
@@ -17,11 +34,17 @@ __meta__ = {
 }
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 2.5, 2.5 )
 texture = ExtResource( 1 )
+hframes = 4
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+anims/0 = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 3.89767, 1.89316 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="DashSound" type="AudioStreamPlayer2D" parent="."]
 position = Vector2( 3.89767, 1.89316 )
