@@ -3,16 +3,18 @@ extends KinematicBody2D
 var velocity = Vector2(0, 0);
 var speed = 165;
 var dash_charged = true;
-var jump_count = 0;
 var just_hit_ground = false;
 var dashing = false;
 var death_count = 0;
+var coyote_hanging = true;
+var jump_was_pressed = false;
+
 onready var main_sprite = get_node("Sprite");
+
 enum {IDLE = 0, WALKING = 1, DASHING = 2, FAST_FALLING = 3};
 var animation_state = IDLE;
 
 func _physics_process(_delta):
-	
 	# flips sprite/animation to direction, and moves character left and right.
 	if (Input.is_action_pressed("move_right")):
 		main_sprite.set_flip_h(false); 
@@ -26,23 +28,27 @@ func _physics_process(_delta):
 		dash();
 	
 	# checks if pressing dash button, then adds velocity upwards 
-	if (Input.is_action_just_pressed("jump") and jump_count < 2):
-		velocity.y = -290;
-		jump_count += 1;
+	# coyote hanging allows you leniency when jumping
+	if (Input.is_action_just_pressed("jump")):
+		jump_was_pressed = true;
+		remember_jump_time();
+		if (coyote_hanging):
+			velocity.y = -290;
 	
 	# plays ground hit noise, and sets a couple of variables
 	# dash_charged (recharges dash on ground touch)
-	# jump_count (allows for double jumps) 
 	if (is_on_floor()):
+		if (jump_was_pressed):
+			velocity.y = -290;
+		coyote_hanging = true;
 		if (not just_hit_ground):
 			$GroundSound.play();
 			just_hit_ground = true;
 		dash_charged = true;
-		jump_count = 0;
 	
 	# doesn't apply gravity when on a floor (or it would build endlessly),
-	# to make it closer to celeste, it doesnt apply gravity when dashing
-	if (not is_on_floor() and not dashing):
+	if (not is_on_floor()):
+		coyote_time();
 		velocity.y += (15 + (10 if (Input.is_action_pressed("crouch") and not dashing) else 0)); #gravity
 		just_hit_ground = false;
 	
@@ -81,7 +87,18 @@ func dash():
 	dashing = false;
 	
 	dash_charged = false;
+	pass;
 
 func animation_loop():
 	$Sprite/AnimationPlayer.play(str(animation_state));
+	pass;
 	
+func coyote_time():
+	yield(get_tree().create_timer(0.1), "timeout");
+	coyote_hanging = false;
+	pass;
+
+func remember_jump_time():
+	yield(get_tree().create_timer(0.07), "timeout");
+	jump_was_pressed = false;
+	pass;
