@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 var velocity = Vector2(0, 0);
 var speed = 165;
-var jump_height = -290;
+var jump_height = -300;
 var death_count = 0;
 
 var dash_charged = true;
@@ -37,6 +37,10 @@ func _physics_process(_delta):
 		remember_jump_time();
 		if (coyote_hanging):
 			velocity.y = jump_height;
+	
+	# short hopping
+	if (Input.is_action_just_released("jump") and velocity.y < 0):
+		velocity.y += 150;
 	
 	# plays ground hit noise, and sets a couple of variables
 	# dash_charged (recharges dash on ground touch)
