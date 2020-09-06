@@ -40,7 +40,7 @@ func _physics_process(_delta):
 	
 	# short hopping
 	if (Input.is_action_just_released("jump") and velocity.y < 0):
-		velocity.y += 150;
+		velocity.y += 100;
 	
 	# plays ground hit noise, and sets a couple of variables
 	# dash_charged (recharges dash on ground touch)
