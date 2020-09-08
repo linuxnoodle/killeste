@@ -43,7 +43,7 @@ frame = 1
 anims/0 = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 3.89767, 1.89316 )
+position = Vector2( 3.898, 1.893 )
 shape = SubResource( 2 )
 
 [node name="DashSound" type="AudioStreamPlayer2D" parent="."]
