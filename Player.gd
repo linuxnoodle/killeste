@@ -26,7 +26,7 @@ enum {IDLE = 0, WALKING = 1, DASHING = 2, FAST_FALLING = 3};
 var animation_state = IDLE;
 
 func _physics_process(_delta):
-
+	$Camera2D.global_transform.origin.y = 50;
 	# flips sprite/animation to direction, and moves character left and right.
 	# 0 is no movement, -1 is left, and 1 is right
 	if (Input.is_action_pressed("move_right")):
@@ -73,7 +73,7 @@ func _physics_process(_delta):
 		just_hit_ground = false;
 
 	# checks if pressing dash button, then dashes
-	if (Input.is_action_just_pressed("dash")):
+	if (Input.is_action_just_pressed("dash") and dash_charged):
 		dash();
 
 	# moves character with the provided velocity
@@ -90,7 +90,8 @@ func _physics_process(_delta):
 
 # function that dashes toward a direction
 func dash():
-
+	
+	velocity = Vector2.ZERO;
 	# makes variables based on what directions are being pressed 
 	var up = 1 if Input.get_action_strength("up") else 0;
 	var down = 1 if Input.get_action_strength("crouch") else 0;
@@ -119,7 +120,7 @@ func animation_loop():
 
 # gives leniency when jumping off platforms
 func coyote_time():
-	yield(get_tree().create_timer(0.1), "timeout");
+	yield(get_tree().create_timer(0.15), "timeout");
 	coyote_hanging = false;
 	pass;
 
