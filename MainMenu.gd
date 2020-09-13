@@ -8,8 +8,12 @@ onready var start_button = $HSplitContainer/ButtonContainer/VBoxContainer/StartB
 onready var options_button = $HSplitContainer/ButtonContainer/VBoxContainer/OptionsButton;
 onready var quit_button = $HSplitContainer/ButtonContainer/VBoxContainer/QuitButton;
 
+func _ready():
+	MusicController.play_music();
+
 # changes scene to main
 func _on_StartButton_pressed():
+# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://TestingScene.tscn");
 
 # placeholder
