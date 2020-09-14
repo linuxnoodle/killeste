@@ -56,7 +56,7 @@ func _physics_process(delta):
 	# crouching
 	# 0.65x speed
 	# 1.3x dash
-	if (Input.is_action_pressed("crouch") and not is_dashing):
+	if (Input.is_action_pressed("crouch") and not is_dashing and is_on_floor()):
 		scale.y = 0.65;
 		speed = 82.5;
 		dash_speed = 195;
