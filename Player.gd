@@ -33,14 +33,14 @@ func _physics_process(delta):
 	if (Input.is_action_pressed("move_right")):
 		main_sprite.set_flip_h(false); 
 		velocity.x = speed;
-		if (last_movement != 1):
-			self.get_node("CollisionShape2D").translate(Vector2(3.8, 0));
+		if (last_movement < 0):
+			self.get_node("CollisionShape2D").translate(Vector2(7.5, 0));
 		last_movement = 1;
 	elif (Input.is_action_pressed("move_left")):
 		main_sprite.set_flip_h(true);
 		velocity.x = -speed;
 		if (last_movement != -1):
-			self.get_node("CollisionShape2D").translate(Vector2(-3.8, 0));
+			self.get_node("CollisionShape2D").translate(Vector2(-7.5, 0));
 		last_movement = -1;
 	# checks if pressing dash button, then adds velocity upwards 
 	# coyote hanging allows you leniency when jumping

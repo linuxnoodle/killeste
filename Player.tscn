@@ -23,7 +23,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 23.687
+radius = 23.7096
 height = 19.9849
 
 [node name="Player" type="KinematicBody2D"]
@@ -42,6 +42,7 @@ frame = 3
 anims/0 = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 5, 0 )
 shape = SubResource( 2 )
 
 [node name="DashSound" type="AudioStreamPlayer2D" parent="."]
