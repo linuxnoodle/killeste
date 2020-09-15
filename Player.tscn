@@ -27,6 +27,7 @@ radius = 23.7096
 height = 19.9849
 
 [node name="Player" type="KinematicBody2D"]
+pause_mode = 1
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true

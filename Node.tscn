@@ -6,5 +6,6 @@
 script = ExtResource( 2 )
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
 volume_db = -7.0
 autoplay = true

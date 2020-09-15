@@ -1,8 +1,7 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Pause.gd" type="Script" id=2]
-[ext_resource path="res://PerfMonitor/PerfMonitor.tscn" type="PackedScene" id=3]
+[ext_resource path="res://PauseMenu.tscn" type="PackedScene" id=2]
 [ext_resource path="res://tilemap.png" type="Texture" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
@@ -1191,29 +1190,14 @@ offset = Vector2( 0, -75 )
 current = true
 smoothing_enabled = true
 
+[node name="PauseMenu" parent="Player" instance=ExtResource( 2 )]
+offset = Vector2( -960, -640 )
+scale = Vector2( 1, 1.1 )
+transform = Transform2D( 1, 0, 0, 1.1, -960, -640 )
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 46 )
 collision_friction = 0.55
+collision_bounce = 0.05
 format = 1
 tile_data = PoolIntArray( 196599, 2, 0, 196600, 1, 0, 262135, 3, 0, 262136, 4, 0, 196615, 2, 0, 196616, 0, 0, 196617, 0, 0, 196618, 1, 0, 327671, 3, 0, 327672, 4, 0, 327673, 0, 0, 327674, 0, 0, 327675, 0, 0, 327676, 0, 0, 327677, 0, 0, 327678, 0, 0, 327679, 0, 0, 262144, 0, 0, 262145, 0, 0, 262146, 0, 0, 262147, 0, 0, 262148, 0, 0, 262149, 0, 0, 262150, 0, 0, 262151, 4, 0, 262152, 4, 0, 262153, 4, 0, 262154, 4, 0, 393207, 3, 0, 393208, 4, 0, 393209, 4, 0, 393210, 4, 0, 393211, 4, 0, 393212, 4, 0, 393213, 4, 0, 393214, 4, 0, 393215, 4, 0, 327680, 4, 0, 327681, 4, 0, 327682, 4, 0, 327683, 4, 0, 327684, 4, 0, 327685, 4, 0, 327686, 4, 0, 327687, 4, 0, 327688, 4, 0, 327689, 4, 0, 327690, 4, 0, 458743, 3, 0, 458744, 4, 0, 458745, 4, 0, 458746, 4, 0, 458747, 4, 0, 458748, 4, 0, 458749, 4, 0, 458750, 4, 0, 458751, 4, 0, 393216, 4, 0, 393217, 4, 0, 393218, 4, 0, 393219, 4, 0, 393220, 4, 0, 393221, 4, 0, 393222, 4, 0, 393223, 4, 0, 393224, 4, 0, 393225, 4, 0, 393226, 4, 0, 524279, 44, 0, 524280, 4, 0, 524281, 4, 0, 524282, 9, 0, 524283, 9, 0, 524284, 9, 0, 524285, 9, 0, 524286, 9, 0, 524287, 9, 0, 458752, 9, 0, 458753, 9, 0, 458754, 9, 0, 458755, 9, 0, 458756, 9, 0, 458757, 9, 0, 458758, 9, 0, 458759, 9, 0, 458760, 9, 0, 458761, 9, 0, 458762, 18, 0 )
-
-[node name="CanvasLayer" parent="." instance=ExtResource( 3 )]
-
-[node name="Pause" type="Control" parent="CanvasLayer"]
-visible = false
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Overlay" type="ColorRect" parent="CanvasLayer/Pause"]
-margin_left = -4.0
-margin_top = -8.0
-margin_right = 1920.0
-margin_bottom = 1084.0
-color = Color( 0, 0, 0, 0.713726 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
