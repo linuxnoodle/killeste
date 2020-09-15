@@ -3,11 +3,11 @@ extends KinematicBody2D
 var velocity = Vector2();
 var axis = Vector2();
 var speed = 165;
-var jump_height = -400;
+var jump_height = -350;
 var death_count = 0;
 var last_movement = 0;
 
-var dash_speed = 250;
+var dash_speed = 220;
 var dash_charged = true;
 var is_dashing = false;
 
