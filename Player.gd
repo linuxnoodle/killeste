@@ -22,25 +22,32 @@ var wall_slide_factor = 0.8;
 var wall_jump_timer = 0;
 
 onready var main_sprite = get_node("Sprite");
+onready var camera = get_node("Camera2D");
+onready var collision = get_node("CollisionShape2D");
+
+onready var ground_sound = get_node("GroundSound");
+onready var dash_sound = get_node("DashSound");
+
+onready var animation_player = get_node("Sprite/AnimationPlayer");
 
 enum {IDLE = 0, WALKING = 1, DASHING = 2, FAST_FALLING = 3};
 var animation_state = IDLE;
 
 func _physics_process(delta):
-	$Camera2D.global_transform.origin.y = 50;
+	camera.global_transform.origin.y = 50;
 	# flips sprite/animation to direction, and moves character left and right.
 	# 0 is no movement, -1 is left, and 1 is right
 	if (Input.is_action_pressed("move_right")):
 		main_sprite.set_flip_h(false); 
 		velocity.x = speed;
 		if (last_movement < 0):
-			self.get_node("CollisionShape2D").translate(Vector2(7.5, 0));
+			collision.translate(Vector2(7.5, 0));
 		last_movement = 1;
 	elif (Input.is_action_pressed("move_left")):
 		main_sprite.set_flip_h(true);
 		velocity.x = -speed;
 		if (last_movement != -1):
-			self.get_node("CollisionShape2D").translate(Vector2(-7.5, 0));
+			collision.translate(Vector2(-7.5, 0));
 		last_movement = -1;
 	# checks if pressing dash button, then adds velocity upwards 
 	# coyote hanging allows you leniency when jumping
@@ -81,7 +88,7 @@ func _physics_process(delta):
 			velocity.y = 0;
 		coyote_hanging = true;
 		if (not just_hit_ground):
-			$GroundSound.play();
+			ground_sound.play();
 			just_hit_ground = true;
 		dash_charged = true;
 
@@ -121,7 +128,7 @@ func dash():
 	var dash_vector = Vector2(right - left, down - up).normalized() * 2.2 * dash_speed;
 	if ((left or right) and not (up or down)):
 		dash_vector *= 2;
-	$DashSound.play();
+	dash_sound.play();
 
 	# adds to velocity
 	is_dashing = true;
@@ -133,7 +140,7 @@ func dash():
 	pass;
 
 func animation_loop():
-	$Sprite/AnimationPlayer.play(str(animation_state));
+	animation_player.play(str(animation_state));
 	pass;
 
 # gives leniency when jumping off platforms

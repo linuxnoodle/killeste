@@ -33,6 +33,7 @@ window/size/width=1920
 window/size/height=1080
 window/vsync/use_vsync=false
 window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [editor_plugins]
 
@@ -119,4 +120,5 @@ grab={
 [rendering]
 
 threads/thread_model=2
+environment/default_clear_color=Color( 0.435294, 0.717647, 0.815686, 1 )
 environment/default_environment="res://default_env.tres"
