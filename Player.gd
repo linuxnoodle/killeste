@@ -19,7 +19,7 @@ var wall_sliding = false;
 var is_grabbing = false;
 var is_jumping = false;
 var wall_slide_factor = 0.8;
-var wall_jump_timer = 0;
+var player_movement_allowed = true;
 
 onready var main_sprite = get_node("Sprite");
 onready var camera = get_node("Camera2D");
@@ -37,13 +37,13 @@ func _physics_process(delta):
 	camera.global_transform.origin.y = 50;
 	# flips sprite/animation to direction, and moves character left and right.
 	# 0 is no movement, -1 is left, and 1 is right
-	if (Input.is_action_pressed("move_right")):
+	if (Input.is_action_pressed("move_right") and player_movement_allowed):
 		main_sprite.set_flip_h(false); 
 		velocity.x = speed;
 		if (last_movement < 0):
 			collision.translate(Vector2(7.5, 0));
 		last_movement = 1;
-	elif (Input.is_action_pressed("move_left")):
+	elif (Input.is_action_pressed("move_left") and player_movement_allowed):
 		main_sprite.set_flip_h(true);
 		velocity.x = -speed;
 		if (last_movement != -1):
@@ -101,7 +101,17 @@ func _physics_process(delta):
 	# checks if pressing dash button, then dashes
 	if (Input.is_action_just_pressed("dash") and dash_charged):
 		dash();
-
+	
+	# speed capping
+	if (velocity.x > 400):
+		velocity.x = 400;
+	elif (velocity.x < -400):
+		velocity.x = -400;
+	if (velocity.y > 400):
+		velocity.y = 400;
+	elif (velocity.y < -400):
+		velocity.y = -400;
+		
 	# moves character with the provided velocity
 	# warning-ignore:return_value_discarded
 	move_and_slide(velocity, Vector2.UP, true);
@@ -151,7 +161,7 @@ func coyote_time():
 
 # allows jumps to "buffer", so you have leeway when bhopping
 func remember_jump_time():
-	yield(get_tree().create_timer(0.08), "timeout");
+	yield(get_tree().create_timer(0.1), "timeout");
 	jump_was_pressed = false;
 	pass;
 
@@ -167,17 +177,15 @@ func wall_slide(delta):
 				else:
 					velocity.y = 0;
 			elif (Input.is_action_just_pressed("jump")):
-				print("placeholder")
-				#wall_jump(delta);
+				velocity.x *= -5;
+				velocity.y *= -5;
+				player_movement_allowed = false;
+				main_sprite.set_flip_h(false if (last_movement == -1) else true);
+				yield(get_tree().create_timer(0.27), 'timeout');
+				player_movement_allowed = true;
 			else:
 				is_grabbing = false;
 				velocity.y = velocity.y * wall_slide_factor;
 		else:
 			wall_sliding = false;
 			is_grabbing = false;
-			
-func wall_jump(delta):
-	wall_jump_timer = 0;
-	velocity.x = jump_height * scale.x * delta;
-	velocity.y = jump_height * delta;
-	scale.x = -scale.x;
