@@ -119,6 +119,9 @@ grab={
 
 [rendering]
 
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=0
+quality/2d/use_pixel_snap=true
 threads/thread_model=2
-environment/default_clear_color=Color( 0.435294, 0.717647, 0.815686, 1 )
+environment/default_clear_color=Color( 0.192157, 0.207843, 0.211765, 0.760784 )
 environment/default_environment="res://default_env.tres"

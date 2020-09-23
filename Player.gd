@@ -7,7 +7,7 @@ var jump_height = -350;
 var death_count = 0;
 var last_movement = 0;
 
-var dash_speed = 220;
+var dash_speed = 250;
 var dash_charged = true;
 var is_dashing = false;
 
@@ -95,7 +95,7 @@ func _physics_process(delta):
 	# doesn't apply gravity when on a floor (or it would build endlessly),
 	if (not is_on_floor() and not is_grabbing and velocity.y < 700):
 		coyote_time();
-		velocity.y += (15 + (10 if (Input.is_action_pressed("crouch") and not is_dashing) else 0)); #gravity
+		velocity.y += (20 + (10 if (Input.is_action_pressed("crouch") and not is_dashing) else 0)); #gravity
 		just_hit_ground = false;
 
 	# checks if pressing dash button, then dashes
@@ -103,14 +103,14 @@ func _physics_process(delta):
 		dash();
 	
 	# speed capping
-	if (velocity.x > 400):
-		velocity.x = 400;
-	elif (velocity.x < -400):
-		velocity.x = -400;
-	if (velocity.y > 400):
-		velocity.y = 400;
-	elif (velocity.y < -400):
-		velocity.y = -400;
+	if (velocity.x > 600):
+		velocity.x = 600;
+	elif (velocity.x < -600):
+		velocity.x = -600;
+	if (velocity.y > 600):
+		velocity.y = 600;
+	elif (velocity.y < -600):
+		velocity.y = -600;
 		
 	# moves character with the provided velocity
 	# warning-ignore:return_value_discarded
@@ -137,7 +137,7 @@ func dash():
 	# vector to add to velocity
 	var dash_vector = Vector2(right - left, down - up).normalized() * 2.2 * dash_speed;
 	if ((left or right) and not (up or down)):
-		dash_vector *= 2;
+		dash_vector *= 4;
 	dash_sound.play();
 
 	# adds to velocity
@@ -177,11 +177,11 @@ func wall_slide(delta):
 				else:
 					velocity.y = 0;
 			elif (Input.is_action_just_pressed("jump")):
-				velocity.x *= -5;
-				velocity.y *= -5;
+				velocity.x *= -800 * delta;
+				velocity.y *= -1000 * delta;
 				player_movement_allowed = false;
 				main_sprite.set_flip_h(false if (last_movement == -1) else true);
-				yield(get_tree().create_timer(0.27), 'timeout');
+				yield(get_tree().create_timer(0.185), 'timeout');
 				player_movement_allowed = true;
 			else:
 				is_grabbing = false;
