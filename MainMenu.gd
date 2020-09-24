@@ -13,12 +13,11 @@ func _ready():
 
 # changes scene to main
 func _on_StartButton_pressed():
-# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://TestingScene.tscn");
 
 # placeholder
 func _on_OptionsButton_pressed():
-	print("penis man")
+	print("poo poo")
 
 # quits game
 func _on_QuitButton_pressed():

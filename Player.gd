@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 var velocity = Vector2();
 var axis = Vector2();
-var speed = 165;
+var speed = 150;
 var jump_height = -350;
 var death_count = 0;
 var last_movement = 0;
@@ -18,7 +18,7 @@ var just_hit_ground = false;
 var wall_sliding = false;
 var is_grabbing = false;
 var is_jumping = false;
-var wall_slide_factor = 0.8;
+var wall_slide_factor = 0.865;
 var player_movement_allowed = true;
 
 onready var main_sprite = get_node("Sprite");
@@ -93,7 +93,7 @@ func _physics_process(delta):
 		dash_charged = true;
 
 	# doesn't apply gravity when on a floor (or it would build endlessly),
-	if (not is_on_floor() and not is_grabbing and velocity.y < 700):
+	if ((not is_on_floor()) and (not is_grabbing)):
 		coyote_time();
 		velocity.y += (20 + (10 if (Input.is_action_pressed("crouch") and not is_dashing) else 0)); #gravity
 		just_hit_ground = false;
@@ -107,10 +107,10 @@ func _physics_process(delta):
 		velocity.x = 600;
 	elif (velocity.x < -600):
 		velocity.x = -600;
-	if (velocity.y > 600):
-		velocity.y = 600;
-	elif (velocity.y < -600):
-		velocity.y = -600;
+	if (velocity.y > 500):
+		velocity.y = 500;
+	elif (velocity.y < -500):
+		velocity.y = -500;
 		
 	# moves character with the provided velocity
 	# warning-ignore:return_value_discarded
@@ -172,16 +172,23 @@ func wall_slide(delta):
 			wall_sliding = true;
 			if (Input.is_action_pressed("grab")):
 				is_grabbing = true;
-				if axis.y != 0:
-					velocity.y = axis.y * 12000 * delta;
+				if (Input.is_action_just_pressed("jump")):
+					velocity.y += -80000 * delta;
+				elif (Input.is_action_pressed("up")):
+					velocity.y += -700 * delta;
+				elif (Input.is_action_pressed("crouch")):
+					velocity.y += 700 * delta;
 				else:
-					velocity.y = 0;
+					if axis.y != 0:
+						velocity.y = axis.y * 60000 * delta;
+					else:
+						velocity.y = 0;
 			elif (Input.is_action_just_pressed("jump")):
-				velocity.x *= -800 * delta;
-				velocity.y *= -1000 * delta;
+				velocity.x *= -500 * delta;
+				velocity.y *= -275 * delta;
 				player_movement_allowed = false;
 				main_sprite.set_flip_h(false if (last_movement == -1) else true);
-				yield(get_tree().create_timer(0.185), 'timeout');
+				yield(get_tree().create_timer(0.35), 'timeout');
 				player_movement_allowed = true;
 			else:
 				is_grabbing = false;
