@@ -7,9 +7,11 @@ pause_mode = 2
 follow_viewport_enable = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-anchor_right = 1.0
+anchor_left = -0.000437927
+anchor_right = 0.999562
 anchor_bottom = 1.0
+margin_left = 1.05957
+margin_right = 1.05957
 color = Color( 0, 0, 0, 0.478431 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -21,37 +23,48 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -960.0
-margin_top = -125.0
-margin_right = 960.0
-margin_bottom = 125.0
+margin_left = -186.0
+margin_top = -47.0
+margin_right = 183.0
+margin_bottom = 9.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer"]
-margin_right = 1920.0
-margin_bottom = 250.0
+margin_right = 369.0
+margin_bottom = 92.0
 
 [node name="ContinueButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
-margin_right = 1920.0
+margin_right = 369.0
 margin_bottom = 20.0
 text = "Continue"
 flat = true
 
-[node name="OptionsButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
-margin_right = 12.0
-margin_bottom = 20.0
-text = "Options"
+[node name="HostingButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 369.0
+margin_bottom = 44.0
+text = "Start Hosting"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JoinButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
+margin_top = 48.0
+margin_right = 369.0
+margin_bottom = 68.0
+text = "Connect"
 flat = true
 
 [node name="ExitButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
-margin_top = 24.0
-margin_right = 1920.0
-margin_bottom = 44.0
+margin_top = 72.0
+margin_right = 369.0
+margin_bottom = 92.0
 text = "Exit"
 flat = true
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ContinueButton" to="ColorRect" method="_on_Button_pressed"]
-[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/OptionsButton" to="ColorRect" method="_on_OptionsButton_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/HostingButton" to="ColorRect" method="_on_HostingButton_pressed"]
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ExitButton" to="ColorRect" method="_on_ExitButton_pressed"]
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ExitButton" to="ColorRect" method="_on_MenuButton_pressed"]

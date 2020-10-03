@@ -13,9 +13,6 @@ func _on_Button_pressed():
 func _on_ExitButton_pressed():
 	get_tree().quit();
 
-func _on_OptionsButton_pressed():
-	pass # Replace with function body.
-
 func invert_pause():
 	pause_state = not get_tree().paused;
 	get_tree().paused = pause_state;

@@ -22,17 +22,19 @@ _global_script_class_icons={
 
 config/name="killeste"
 run/main_scene="res://MainMenu.tscn"
+boot_splash/bg_color=Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 
 [autoload]
 
 MusicController="*res://Node.tscn"
+Network="*res://Network.gd"
 
 [display]
 
 window/size/width=1920
 window/size/height=1080
 window/vsync/use_vsync=false
-window/stretch/mode="viewport"
+window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
 [editor_plugins]
@@ -124,4 +126,5 @@ quality/intended_usage/framebuffer_allocation.mobile=0
 quality/2d/use_pixel_snap=true
 threads/thread_model=2
 environment/default_clear_color=Color( 0.192157, 0.207843, 0.211765, 0.760784 )
+quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"

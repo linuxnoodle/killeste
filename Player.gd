@@ -18,6 +18,8 @@ var just_hit_ground = false;
 var wall_sliding = false;
 var is_grabbing = false;
 var is_jumping = false;
+var just_reset_color = false;
+var walljump_count = 0;
 var wall_slide_factor = 0.865;
 var player_movement_allowed = true;
 
@@ -67,10 +69,12 @@ func _physics_process(delta):
 		scale.y = 0.65;
 		speed = 82.5;
 		dash_speed = 195;
+		player_movement_allowed = false;
 	elif (Input.is_action_just_released("crouch")):
 		scale.y = 1;
 		speed = 165; 
 		dash_speed = 150;
+		player_movement_allowed = true;
 	
 	# short hopping
 	if (Input.is_action_just_released("jump") and velocity.y < 0):
@@ -91,6 +95,9 @@ func _physics_process(delta):
 			ground_sound.play();
 			just_hit_ground = true;
 		dash_charged = true;
+		if (walljump_count != 0):
+			modulate = Color(1, 1, 1, 1);
+		walljump_count = 0;
 
 	# doesn't apply gravity when on a floor (or it would build endlessly),
 	if ((not is_on_floor()) and (not is_grabbing)):
@@ -171,15 +178,20 @@ func wall_slide(delta):
 		if (is_on_wall()):
 			wall_sliding = true;
 			if (Input.is_action_pressed("grab")):
-				is_grabbing = true;
-				if (Input.is_action_just_pressed("jump")):
+				is_grabbing = (true and walljump_count < 4);
+				if (Input.is_action_just_pressed("jump") and walljump_count < 4):
 					velocity.y += -80000 * delta;
-				elif (Input.is_action_pressed("up")):
-					velocity.y += -700 * delta;
-				elif (Input.is_action_pressed("crouch")):
-					velocity.y += 700 * delta;
+					walljump_count += 1;
+				elif (Input.is_action_pressed("up") and walljump_count < 4):
+					velocity.y = -7000 * delta;
+					walljump_count += 0.05;
+				elif (Input.is_action_pressed("crouch") and walljump_count < 4):
+					velocity.y = 7000 * delta;
+					walljump_count += 0.05;
 				else:
-					if axis.y != 0:
+					if (walljump_count >= 4):
+						modulate = Color(0.5, 0.4, 0.4, 1)
+					if (axis.y != 0 and walljump_count < 4):
 						velocity.y = axis.y * 60000 * delta;
 					else:
 						velocity.y = 0;
