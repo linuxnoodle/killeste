@@ -9,15 +9,17 @@ var last_movement = 0;
 
 var dash_speed = 250;
 var dash_charged = true;
-var is_dashing = false;
 
 var coyote_hanging = true;
 var jump_was_pressed = false;
 var just_hit_ground = false;
 
-var wall_sliding = false;
 var is_grabbing = false;
 var is_jumping = false;
+var is_walking = false;
+var is_dashing = false;
+
+var wall_sliding = false;
 var just_reset_color = false;
 var walljump_count = 0;
 var wall_slide_factor = 0.865;
@@ -32,9 +34,6 @@ onready var dash_sound = get_node("DashSound");
 
 onready var animation_player = get_node("Sprite/AnimationPlayer");
 
-enum {IDLE = 0, WALKING = 1, DASHING = 2, FAST_FALLING = 3};
-var animation_state = IDLE;
-
 func _physics_process(delta):
 	camera.global_transform.origin.y = 50;
 	# flips sprite/animation to direction, and moves character left and right.
@@ -42,15 +41,19 @@ func _physics_process(delta):
 	if (Input.is_action_pressed("move_right") and player_movement_allowed):
 		main_sprite.set_flip_h(false); 
 		velocity.x = speed;
+		is_walking = true;
 		if (last_movement < 0):
 			collision.translate(Vector2(7.5, 0));
 		last_movement = 1;
 	elif (Input.is_action_pressed("move_left") and player_movement_allowed):
 		main_sprite.set_flip_h(true);
 		velocity.x = -speed;
+		is_walking = true;
 		if (last_movement != -1):
 			collision.translate(Vector2(-7.5, 0));
 		last_movement = -1;
+	else:
+		is_walking = false;
 	# checks if pressing dash button, then adds velocity upwards 
 	# coyote hanging allows you leniency when jumping
 	if (Input.is_action_just_pressed("jump")):
@@ -59,7 +62,7 @@ func _physics_process(delta):
 		if (coyote_hanging):
 			is_jumping = true;
 			velocity.y = jump_height;
-			yield(get_tree().create_timer(0.25), "timeout");
+			yield(get_tree().create_timer(0.3), "timeout");
 			is_jumping = false;
 	
 	# crouching
@@ -150,15 +153,21 @@ func dash():
 	# adds to velocity
 	is_dashing = true;
 	velocity = dash_vector;
+	modulate = Color(0.3, 0.3, 0.5, 1);
 	yield(get_tree().create_timer(0.2), "timeout");
 	is_dashing = false;
-
+	modulate = Color(1, 1, 1, 1);
+	
 	dash_charged = false;
 	pass;
 
 func animation_loop():
-	animation_player.play(str(animation_state));
-	pass;
+	if (is_jumping or jump_was_pressed):
+		animation_player.play("Jumping");
+	elif (is_dashing or is_walking):
+		animation_player.play("Walking");
+	else:
+		animation_player.play("0");
 
 # gives leniency when jumping off platforms
 func coyote_time():
@@ -190,7 +199,7 @@ func wall_slide(delta):
 					walljump_count += 0.05;
 				else:
 					if (walljump_count >= 4):
-						modulate = Color(0.5, 0.4, 0.4, 1)
+						modulate = Color(0.7, 0.5, 0, 1)
 					if (axis.y != 0 and walljump_count < 4):
 						velocity.y = axis.y * 60000 * delta;
 					else:
