@@ -5,6 +5,7 @@ var seconds = 0;
 var minutes = 0;
 var hours = 0;
 var time_text = "";
+var timer_on = true;
 
 func _process(_delta):
 	if (milliseconds > 99):
@@ -41,4 +42,10 @@ func _process(_delta):
 	time_text = "";
 
 func _on_Timer_timeout():
-	milliseconds += 1;
+	if (timer_on):
+		milliseconds += 1;
+	else:
+		get_parent().get_parent().self_modulate = Color(1, 1, 1, 1);
+		get_parent().get_parent().get_node("Label").modulate = Color(1, 1, 1, 1);
+		get_tree().paused = true;
+		self_modulate = Color(1, 1, 0, 1)

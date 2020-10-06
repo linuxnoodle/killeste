@@ -5,7 +5,6 @@ var pressed2 = false;
 var pressed3 = false;
 
 onready var start_button = $HSplitContainer/ButtonContainer/VBoxContainer/StartButton;
-onready var options_button = $HSplitContainer/ButtonContainer/VBoxContainer/OptionsButton;
 onready var quit_button = $HSplitContainer/ButtonContainer/VBoxContainer/QuitButton;
 
 func _ready():

@@ -133,8 +133,14 @@ func _physics_process(delta):
 	animation_loop();
 	velocity.x = lerp(velocity.x, 0, 0.25);
 	if (global_position.y > 1000):
-		global_position = DEATH_POS;
-		death_count += 1;
+		die();
+
+func die():
+	global_position = DEATH_POS;
+	Engine.time_scale = 0.5;
+	yield(get_tree().create_timer(0.2), "timeout");
+	Engine.time_scale = 1;
+	death_count += 1;
 
 # function that dashes toward a direction
 func dash():

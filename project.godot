@@ -136,6 +136,6 @@ quality/intended_usage/framebuffer_allocation.mobile=1
 quality/2d/use_pixel_snap=true
 threads/thread_model=2
 quality/filters/use_nearest_mipmap_filter=true
-environment/default_clear_color=Color( 0.192157, 0.207843, 0.211765, 0.760784 )
+environment/default_clear_color=Color( 0.152941, 0.152941, 0.152941, 0.760784 )
 quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"
