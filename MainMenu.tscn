@@ -125,30 +125,10 @@ texture_normal = ExtResource( 9 )
 texture_pressed = ExtResource( 6 )
 texture_hover = ExtResource( 3 )
 
-[node name="HSplitContainer" type="HSplitContainer" parent="ButtonContainer/VBoxContainer"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="ButtonContainer/VBoxContainer"]
 margin_top = 360.0
 margin_right = 362.0
 margin_bottom = 408.0
-split_offset = 190
-
-[node name="LineEdit" type="LineEdit" parent="ButtonContainer/VBoxContainer/HSplitContainer"]
-margin_right = 272.0
-margin_bottom = 48.0
-custom_fonts/font = SubResource( 1 )
-text = "Default"
-
-[node name="Label" type="Label" parent="ButtonContainer/VBoxContainer/HSplitContainer"]
-margin_left = 284.0
-margin_top = 5.0
-margin_right = 362.0
-margin_bottom = 43.0
-custom_fonts/font = SubResource( 2 )
-text = "NAME"
-
-[node name="HSplitContainer2" type="HSplitContainer" parent="ButtonContainer/VBoxContainer"]
-margin_top = 438.0
-margin_right = 362.0
-margin_bottom = 486.0
 split_offset = 190
 
 [node name="LineEdit" type="LineEdit" parent="ButtonContainer/VBoxContainer/HSplitContainer2"]
@@ -166,9 +146,9 @@ custom_fonts/font = SubResource( 2 )
 text = "IP"
 
 [node name="HSplitContainer3" type="HSplitContainer" parent="ButtonContainer/VBoxContainer"]
-margin_top = 516.0
+margin_top = 438.0
 margin_right = 362.0
-margin_bottom = 562.0
+margin_bottom = 484.0
 
 [node name="CheckBox" type="CheckBox" parent="ButtonContainer/VBoxContainer/HSplitContainer3"]
 margin_right = 137.0

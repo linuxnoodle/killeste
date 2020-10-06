@@ -36,13 +36,17 @@ onready var dash_sound = get_node("DashSound");
 
 onready var animation_player = get_node("Sprite/AnimationPlayer");
 onready var Global = get_node("/root/MusicController");
-onready var Networking = get_node("/root/Networking");
+onready var Networking = get_node("/root/Network");
+onready var camera = get_node("PlayerCamera");
 
+# warning-ignore:deprecated_keyword
 slave var slave_position = Vector2();
+# warning-ignore:deprecated_keyword
 slave var slave_movement = Vector2();
 
 func _physics_process(delta):
-	
+	#if (!Global.singleplayer):
+		#Networking.update_position(get_tree().get_network_unique_id(), position);
 	if (is_network_master() or Global.singleplayer):
 		# flips sprite/animation to direction, and moves character left and right.
 		# 0 is no movement, -1 is left, and 1 is right
@@ -139,21 +143,19 @@ func _physics_process(delta):
 		velocity.x = lerp(velocity.x, 0, 0.25);
 		if (global_position.y > 550):
 			die();
-		rset_unreliable('slave_position', position);
+		rset('slave_position', position);
 		rset('slave_movement', velocity);
 	else:
-		move_and_slide(slave_movement, Vector2.UP, true);
-		position = slave_position;
+		if (!Global.singleplayer):
+# warning-ignore:return_value_discarded
+			move_and_slide(slave_movement, Vector2.UP, true);
+			position = slave_position;
 		
-	
 	if (get_tree().is_network_server()):
-		Network.update_position(int(name), position)
+		Network.update_position(get_tree().get_network_unique_id(), position)
 
 func die():
 	global_position = DEATH_POS;
-	Engine.time_scale = 0.5;
-	yield(get_tree().create_timer(0.2), "timeout");
-	Engine.time_scale = 1;
 	death_count += 1;
 
 # function that dashes toward a direction
@@ -243,4 +245,6 @@ func wall_slide(delta):
 func init(start_position, is_slave):
 	global_position = start_position
 	if is_slave:
-		$Sprite.texture = load('res://killeste-idle-alt.piskel');
+		#$Sprite.texture = load('res://killeste-idle-alt.piskel');
+		get_node("Camera2D").current = false;
+		get_node("CanvasLayer/Panel/Label").visible = false;

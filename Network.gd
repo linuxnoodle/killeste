@@ -30,25 +30,19 @@ func start_hosting(NAME):
 	peer.create_server(DEFAULT_PORT, MAX_CLIENTS);
 	
 	get_tree().set_network_peer(peer);
-	print(str(DEFAULT_IP) + ":" + str(DEFAULT_PORT));
-
-func stop_hosting():
-	#upnp.delete_port_mapping(DEFAULT_PORT);
-	get_tree().network_peer = null
 
 func join_server(NAME, SERVER_IP):
 	self_data.name = NAME;
 	
 	get_tree().connect('connected_to_server', self, '_connected_to_server');
-	print("connected")
 	var peer = NetworkedMultiplayerENet.new();
 	peer.create_client(SERVER_IP, DEFAULT_PORT);
 	get_tree().set_network_peer(peer);
 
 func _connected_to_server():
-	var local_player_id = get_tree().get_network_unique_id()
-	players[local_player_id] = self_data
-	rpc('_send_player_info', local_player_id, self_data)
+	var local_player_id = get_tree().get_network_unique_id();
+	players[local_player_id] = self_data;
+	rpc('_send_player_info', local_player_id, self_data);
 
 func _on_player_disconnected(id):
 	players.erase(id)
@@ -71,14 +65,12 @@ remote func _request_players(request_from_id):
 				rpc_id(request_from_id, '_send_player_info', peer_id, players[peer_id])
 
 remote func _send_player_info(id, info):
-	if (not Global.singleplayer):
-		players[id] = info
-		var new_player = load('res://Player.tscn').instance()
-		new_player.name = str(id)
-		new_player.set_network_master(id)
-		get_tree().get_root().add_child(new_player);
-		new_player.init(info.position, true)
+	players[id] = info
+	var new_player = load('res://Player.tscn').instance()
+	new_player.name = str(id)
+	new_player.set_network_master(id)
+	get_tree().root.add_child(new_player);
+	new_player.init(info.position, true)
 
 func update_position(id, position):
-	if (not Global.singleplayer):
-		players[id].position = position
+	players[id].position = position

@@ -14,8 +14,7 @@ func _ready():
 # changes scene to main
 func _on_StartButton_pressed():
 	if (is_hosting):
-		var player_name = get_node("ButtonContainer/VBoxContainer/HSplitContainer/LineEdit").text;
-		Networking.start_hosting(player_name);
+		Networking.start_hosting(get_tree().get_network_unique_id());
 		if (not Global.singleplayer):
 			get_node("WaitingPanel").visible = true;
 			while (!Global.playerConnected):

@@ -94,3 +94,10 @@ pause_mode = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 7.71693, 2.24493 )
 shape = SubResource( 4 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+visible = false
+offset = Vector2( 0, -50 )
+current = true
+smoothing_enabled = true
+smoothing_speed = 7.0
