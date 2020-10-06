@@ -1,17 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Pause.gd" type="Script" id=1]
 [ext_resource path="res://MachineGunk-nyqg.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 50
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=2]
-size = 50
-font_data = ExtResource( 2 )
-
-[sub_resource type="DynamicFont" id=3]
 size = 50
 font_data = ExtResource( 2 )
 
@@ -27,9 +19,9 @@ visible = false
 anchor_left = -0.000437927
 anchor_right = 0.999562
 anchor_bottom = 1.0
-margin_left = 1.05957
+margin_left = 0.218628
 margin_top = 2.0
-margin_right = 1.05957
+margin_right = 0.218628
 margin_bottom = 2.0
 color = Color( 0, 0, 0, 0.478431 )
 script = ExtResource( 1 )
@@ -45,14 +37,14 @@ anchor_bottom = 0.5
 margin_left = -186.0
 margin_top = -123.0
 margin_right = 183.0
-margin_bottom = 201.0
+margin_bottom = 174.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/MarginContainer"]
 margin_right = 369.0
-margin_bottom = 324.0
+margin_bottom = 297.0
 
 [node name="ContinueButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
 margin_right = 369.0
@@ -61,33 +53,13 @@ custom_fonts/font = SubResource( 1 )
 text = "Continue"
 flat = true
 
-[node name="HostingButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
-margin_top = 63.0
-margin_right = 369.0
-margin_bottom = 122.0
-custom_fonts/font = SubResource( 2 )
-text = "Start Hosting"
-flat = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="JoinButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
-margin_top = 126.0
-margin_right = 369.0
-margin_bottom = 185.0
-custom_fonts/font = SubResource( 3 )
-text = "Connect"
-flat = true
-
 [node name="ExitButton" type="Button" parent="ColorRect/MarginContainer/VBoxContainer"]
-margin_top = 189.0
+margin_top = 240.0
 margin_right = 369.0
-margin_bottom = 248.0
+margin_bottom = 299.0
 custom_fonts/font = SubResource( 4 )
 text = "Exit"
 flat = true
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ContinueButton" to="ColorRect" method="_on_Button_pressed"]
-[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/HostingButton" to="ColorRect" method="_on_HostingButton_pressed"]
-[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ExitButton" to="ColorRect" method="_on_ExitButton_pressed"]
 [connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ExitButton" to="ColorRect" method="_on_MenuButton_pressed"]
+[connection signal="pressed" from="ColorRect/MarginContainer/VBoxContainer/ExitButton" to="ColorRect" method="_on_ExitButton_pressed"]

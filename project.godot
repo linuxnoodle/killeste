@@ -22,7 +22,7 @@ _global_script_class_icons={
 
 config/name="killeste"
 run/main_scene="res://MainMenu.tscn"
-boot_splash/image="res://o.png"
+boot_splash/image="res://killeste.png"
 boot_splash/bg_color=Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 config/icon="res://bruhdeline.png"
 
@@ -131,11 +131,11 @@ grab={
 
 [rendering]
 
-quality/intended_usage/framebuffer_allocation=1
-quality/intended_usage/framebuffer_allocation.mobile=1
+quality/driver/fallback_to_gles2=true
+quality/intended_usage/framebuffer_allocation=0
+quality/intended_usage/framebuffer_allocation.mobile=0
 quality/2d/use_pixel_snap=true
 threads/thread_model=2
 quality/filters/use_nearest_mipmap_filter=true
 environment/default_clear_color=Color( 0.152941, 0.152941, 0.152941, 0.760784 )
 quality/depth/hdr=false
-environment/default_environment="res://default_env.tres"

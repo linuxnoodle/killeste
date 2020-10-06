@@ -12,6 +12,6 @@ func _on_Area2D_body_entered(body):
 			
 			collision.disabled = true;
 			sprite.visible = false;
-			yield(get_tree().create_timer(5), "timeout")
+			yield(get_tree().create_timer(3), "timeout")
 			collision.disabled = false;
 			sprite.visible = true

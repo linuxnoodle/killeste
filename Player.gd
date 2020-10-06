@@ -29,111 +29,125 @@ var wall_slide_factor = 0.865;
 var player_movement_allowed = true;
 
 onready var main_sprite = get_node("Sprite");
-onready var camera = get_node("Camera2D");
 onready var collision = get_node("CollisionShape2D");
 
 onready var ground_sound = get_node("GroundSound");
 onready var dash_sound = get_node("DashSound");
 
 onready var animation_player = get_node("Sprite/AnimationPlayer");
+onready var Global = get_node("/root/MusicController");
+onready var Networking = get_node("/root/Networking");
+
+slave var slave_position = Vector2();
+slave var slave_movement = Vector2();
 
 func _physics_process(delta):
-	camera.global_transform.origin.y = 50;
-	# flips sprite/animation to direction, and moves character left and right.
-	# 0 is no movement, -1 is left, and 1 is right
-	if (Input.is_action_pressed("move_right") and player_movement_allowed):
-		main_sprite.set_flip_h(false); 
-		velocity.x = speed;
-		is_walking = true;
-		if (last_movement < 0):
-			collision.translate(Vector2(11, 0));
-		last_movement = 1;
-	elif (Input.is_action_pressed("move_left") and player_movement_allowed):
-		main_sprite.set_flip_h(true);
-		velocity.x = -speed;
-		is_walking = true;
-		if (last_movement != -1):
-			collision.translate(Vector2(-11, 0));
-		last_movement = -1;
-	else:
-		is_walking = false;
-	# checks if pressing dash button, then adds velocity upwards 
-	# coyote hanging allows you leniency when jumping
-	if (Input.is_action_just_pressed("jump")):
-		jump_was_pressed = true;
-		remember_jump_time();
-		if (coyote_hanging):
-			is_jumping = true;
-			velocity.y = jump_height;
-			yield(get_tree().create_timer(0.3), "timeout");
-			is_jumping = false;
 	
-	# crouching
-	# 0.65x speed
-	# 1.3x dash
-	if (Input.is_action_pressed("crouch") and not is_dashing and is_on_floor()):
-		scale.y = 0.65;
-		speed = 82.5;
-		dash_speed = 195;
-		player_movement_allowed = false;
-	elif (Input.is_action_just_released("crouch")):
-		scale.y = 1;
-		speed = 165; 
-		dash_speed = 150;
-		player_movement_allowed = true;
-	
-	# short hopping
-	if (Input.is_action_just_released("jump") and velocity.y < 0):
-		velocity.y += 100;
-	
-	if (not (is_dashing or is_jumping)):
-		wall_slide(delta);
-	
-	# plays ground hit noise, and sets a couple of variables
-	# dash_charged (recharges dash on ground touch)
-	if (is_on_floor()):
-		if (jump_was_pressed):
-			velocity.y = jump_height;
+	if (is_network_master() or Global.singleplayer):
+		# flips sprite/animation to direction, and moves character left and right.
+		# 0 is no movement, -1 is left, and 1 is right
+		if (Input.is_action_pressed("move_right") and player_movement_allowed):
+			main_sprite.set_flip_h(false); 
+			velocity.x = speed;
+			is_walking = true;
+			if (last_movement < 0):
+				collision.translate(Vector2(11, 0));
+			last_movement = 1;
+		elif (Input.is_action_pressed("move_left") and player_movement_allowed):
+			main_sprite.set_flip_h(true);
+			velocity.x = -speed;
+			is_walking = true;
+			if (last_movement != -1):
+				collision.translate(Vector2(-11, 0));
+			last_movement = -1;
 		else:
-			velocity.y = 0;
-		coyote_hanging = true;
-		if (not just_hit_ground):
-			ground_sound.play();
-			just_hit_ground = true;
-		dash_charged = true;
-		walljump_count = 0;
-		modulate = Color(1, 1, 1, 1);
-
-	# doesn't apply gravity when on a floor (or it would build endlessly),
-	if ((not is_on_floor()) and (not is_grabbing)):
-		coyote_time();
-		velocity.y += (20 + (10 if (Input.is_action_pressed("crouch") and not is_dashing) else 0)); #gravity
-		just_hit_ground = false;
-
-	# checks if pressing dash button, then dashes
-	if (Input.is_action_just_pressed("dash") and dash_charged):
-		dash();
-	
-	# speed capping
-	if (velocity.x > 600):
-		velocity.x = 600;
-	elif (velocity.x < -600):
-		velocity.x = -600;
-	if (velocity.y > 500):
-		velocity.y = 500;
-	elif (velocity.y < -500):
-		velocity.y = -500;
+			is_walking = false;
+		# checks if pressing dash button, then adds velocity upwards 
+		# coyote hanging allows you leniency when jumping
+		if (Input.is_action_just_pressed("jump")):
+			jump_was_pressed = true;
+			remember_jump_time();
+			if (coyote_hanging):
+				is_jumping = true;
+				velocity.y = jump_height;
+				yield(get_tree().create_timer(0.3), "timeout");
+				is_jumping = false;
 		
-	# moves character with the provided velocity
-	# warning-ignore:return_value_discarded
-	move_and_slide(velocity, Vector2.UP, true);
+		# crouching
+		# 0.65x speed
+		# 1.3x dash
+		if (Input.is_action_pressed("crouch") and not is_dashing and is_on_floor()):
+			scale.y = 0.65;
+			speed = 82.5;
+			dash_speed = 195;
+			player_movement_allowed = false;
+		elif (Input.is_action_just_released("crouch")):
+			scale.y = 1;
+			speed = 165; 
+			dash_speed = 150;
+			player_movement_allowed = true;
+		
+		# short hopping
+		if (Input.is_action_just_released("jump") and velocity.y < 0):
+			velocity.y += 100;
+		
+		if (not (is_dashing or is_jumping)):
+			wall_slide(delta);
+		
+		# plays ground hit noise, and sets a couple of variables
+		# dash_charged (recharges dash on ground touch)
+		if (is_on_floor()):
+			if (jump_was_pressed):
+				velocity.y = jump_height;
+			else:
+				velocity.y = 0;
+			coyote_hanging = true;
+			if (not just_hit_ground):
+				ground_sound.play();
+				just_hit_ground = true;
+			dash_charged = true;
+			walljump_count = 0;
+			modulate = Color(1, 1, 1, 1);
 
-	# makes character movement slowly move down to zero when not moving to
-	# not suddenly stop
-	animation_loop();
-	velocity.x = lerp(velocity.x, 0, 0.25);
-	if (global_position.y > 1000):
-		die();
+		# doesn't apply gravity when on a floor (or it would build endlessly),
+		if ((not is_on_floor()) and (not is_grabbing)):
+			coyote_time();
+			velocity.y += (20 + (10 if (Input.is_action_pressed("crouch") and not is_dashing) else 0)); #gravity
+			just_hit_ground = false;
+
+		# checks if pressing dash button, then dashes
+		if (Input.is_action_just_pressed("dash") and dash_charged):
+			dash();
+		
+		# speed capping
+		if (velocity.x > 600):
+			velocity.x = 600;
+		elif (velocity.x < -600):
+			velocity.x = -600;
+		if (velocity.y > 500):
+			velocity.y = 500;
+		elif (velocity.y < -500):
+			velocity.y = -500;
+			
+		# moves character with the provided velocity
+		# warning-ignore:return_value_discarded
+		move_and_slide(velocity, Vector2.UP, true);
+
+		# makes character movement slowly move down to zero when not moving to
+		# not suddenly stop
+		animation_loop();
+		velocity.x = lerp(velocity.x, 0, 0.25);
+		if (global_position.y > 550):
+			die();
+		rset_unreliable('slave_position', position);
+		rset('slave_movement', velocity);
+	else:
+		move_and_slide(slave_movement, Vector2.UP, true);
+		position = slave_position;
+		
+	
+	if (get_tree().is_network_server()):
+		Network.update_position(int(name), position)
 
 func die():
 	global_position = DEATH_POS;
@@ -225,3 +239,8 @@ func wall_slide(delta):
 		else:
 			wall_sliding = false;
 			is_grabbing = false;
+
+func init(start_position, is_slave):
+	global_position = start_position
+	if is_slave:
+		$Sprite.texture = load('res://killeste-idle-alt.piskel');

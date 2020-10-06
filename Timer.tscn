@@ -41,7 +41,7 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="Panel/MarginContainer"]
 margin_top = 23.0
-margin_right = 430.0
+margin_right = 429.0
 margin_bottom = 108.0
 custom_fonts/font = SubResource( 1 )
 text = "00:00:00.00"
@@ -56,21 +56,28 @@ modulate = Color( 1, 1, 1, 0 )
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = 791.0
+margin_left = 10.0
 margin_top = -70.5
 margin_right = -4.0
 margin_bottom = 76.5
 custom_fonts/font = SubResource( 2 )
 text = "FINISHED."
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="Panel/Label"]
-margin_left = 80.0
-margin_top = 126.0
-margin_right = 526.0
-margin_bottom = 217.0
+margin_left = 396.784
+margin_top = 134.485
+margin_right = 1533.78
+margin_bottom = 243.485
 custom_fonts/font = SubResource( 3 )
-text = "Alt + F4 to Exit"
+text = "Alt + F4 to Exit.
+Through your patience you were able to finish this game.
+"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="Panel/MarginContainer/Label/Timer" to="Panel/MarginContainer/Label" method="_on_Timer_timeout"]
