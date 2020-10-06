@@ -1,13 +1,16 @@
 extends KinematicBody2D
 
+const TYPE = "PLAYER";
+
 var velocity = Vector2();
 var axis = Vector2();
+var DEATH_POS = Vector2(0, 0);
 var speed = 150;
 var jump_height = -350;
 var death_count = 0;
 var last_movement = 0;
 
-var dash_speed = 250;
+var dash_speed = 350;
 var dash_charged = true;
 
 var coyote_hanging = true;
@@ -43,14 +46,14 @@ func _physics_process(delta):
 		velocity.x = speed;
 		is_walking = true;
 		if (last_movement < 0):
-			collision.translate(Vector2(7.5, 0));
+			collision.translate(Vector2(11, 0));
 		last_movement = 1;
 	elif (Input.is_action_pressed("move_left") and player_movement_allowed):
 		main_sprite.set_flip_h(true);
 		velocity.x = -speed;
 		is_walking = true;
 		if (last_movement != -1):
-			collision.translate(Vector2(-7.5, 0));
+			collision.translate(Vector2(-11, 0));
 		last_movement = -1;
 	else:
 		is_walking = false;
@@ -98,9 +101,8 @@ func _physics_process(delta):
 			ground_sound.play();
 			just_hit_ground = true;
 		dash_charged = true;
-		if (walljump_count != 0):
-			modulate = Color(1, 1, 1, 1);
 		walljump_count = 0;
+		modulate = Color(1, 1, 1, 1);
 
 	# doesn't apply gravity when on a floor (or it would build endlessly),
 	if ((not is_on_floor()) and (not is_grabbing)):
@@ -131,7 +133,7 @@ func _physics_process(delta):
 	animation_loop();
 	velocity.x = lerp(velocity.x, 0, 0.25);
 	if (global_position.y > 1000):
-		global_position = Vector2(0, 0);
+		global_position = DEATH_POS;
 		death_count += 1;
 
 # function that dashes toward a direction
@@ -145,7 +147,7 @@ func dash():
 	var right = 1 if Input.get_action_strength("move_right") else 0;
 
 	# vector to add to velocity
-	var dash_vector = Vector2(right - left, down - up).normalized() * 2.2 * dash_speed;
+	var dash_vector = Vector2(right - left, down - up).normalized() * 3.2 * dash_speed;
 	if ((left or right) and not (up or down)):
 		dash_vector *= 4;
 	dash_sound.play();
@@ -153,10 +155,10 @@ func dash():
 	# adds to velocity
 	is_dashing = true;
 	velocity = dash_vector;
-	modulate = Color(0.3, 0.3, 0.5, 1);
+	modulate = Color(0.35, 0.35, 0.5, 1);
 	yield(get_tree().create_timer(0.2), "timeout");
 	is_dashing = false;
-	modulate = Color(1, 1, 1, 1);
+	modulate = Color(0.5, 0.35, 0.35, 1);
 	
 	dash_charged = false;
 	pass;
@@ -192,10 +194,10 @@ func wall_slide(delta):
 					velocity.y += -80000 * delta;
 					walljump_count += 1;
 				elif (Input.is_action_pressed("up") and walljump_count < 4):
-					velocity.y = -7000 * delta;
+					velocity.y = -8000 * delta;
 					walljump_count += 0.05;
 				elif (Input.is_action_pressed("crouch") and walljump_count < 4):
-					velocity.y = 7000 * delta;
+					velocity.y = 8000 * delta;
 					walljump_count += 0.05;
 				else:
 					if (walljump_count >= 4):

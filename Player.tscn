@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://killeste-idle.piskel" type="Texture" id=1]
 [ext_resource path="res://Player.gd" type="Script" id=2]
 [ext_resource path="res://dash.wav" type="AudioStream" id=3]
 [ext_resource path="res://ground.wav" type="AudioStream" id=4]
+[ext_resource path="res://PauseMenu.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Timer.tscn" type="PackedScene" id=6]
 
 [sub_resource type="Animation" id=1]
 resource_name = "0"
@@ -55,8 +57,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="CapsuleShape2D" id=4]
-radius = 23.7096
-height = 19.9849
+radius = 23.3727
 
 [node name="Player" type="KinematicBody2D"]
 pause_mode = 1
@@ -77,10 +78,6 @@ anims/0 = SubResource( 1 )
 anims/Jumping = SubResource( 2 )
 anims/Walking = SubResource( 3 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 5, 0 )
-shape = SubResource( 4 )
-
 [node name="DashSound" type="AudioStreamPlayer2D" parent="."]
 position = Vector2( 3.89767, 1.89316 )
 stream = ExtResource( 3 )
@@ -88,3 +85,11 @@ attenuation = 1.31951
 
 [node name="GroundSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 4 )
+
+[node name="CanvasLayer" parent="." instance=ExtResource( 6 )]
+
+[node name="PauseMenu" parent="." instance=ExtResource( 5 )]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 7.71693, 2.24493 )
+shape = SubResource( 4 )
